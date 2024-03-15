@@ -1,7 +1,5 @@
 import type { Feature, Point, Polygon, Position } from "geojson";
-import type {
-  ExpressionSpecification,
-} from "maplibre-gl";
+import type { ExpressionSpecification } from "maplibre-gl";
 
 export const isPolygon: ExpressionSpecification = [
   "==",
@@ -18,7 +16,6 @@ export const isPoint: ExpressionSpecification = [
   ["geometry-type"],
   "Point",
 ];
-
 
 export function pointFeature(pt: Position): Feature<Point> {
   return {
