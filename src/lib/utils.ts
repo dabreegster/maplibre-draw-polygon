@@ -1,4 +1,11 @@
-import type { Feature, Point, Polygon, Position } from "geojson";
+import type {
+  Feature,
+  FeatureCollection,
+  Point,
+  Polygon,
+  Geometry,
+  Position,
+} from "geojson";
 import type { ExpressionSpecification } from "maplibre-gl";
 
 export const isPolygon: ExpressionSpecification = [
@@ -17,6 +24,13 @@ export const isPoint: ExpressionSpecification = [
   "Point",
 ];
 
+export function emptyGeojson(): FeatureCollection {
+  return {
+    type: "FeatureCollection",
+    features: [],
+  };
+}
+
 export function pointFeature(pt: Position): Feature<Point> {
   return {
     type: "Feature",
@@ -33,3 +47,8 @@ export function pointFeature(pt: Position): Feature<Point> {
 export function setPrecision(pt: Position): Position {
   return [Math.round(pt[0] * 10e6) / 10e6, Math.round(pt[1] * 10e6) / 10e6];
 }
+
+// Properties are guaranteed to exist
+export type FeatureWithProps<G extends Geometry> = Feature<G> & {
+  properties: { [name: string]: any };
+};

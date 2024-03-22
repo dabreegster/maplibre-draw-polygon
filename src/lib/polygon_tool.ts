@@ -1,14 +1,12 @@
 import nearestPointOnLine from "@turf/nearest-point-on-line";
-import type {
-  Feature,
-  FeatureCollection,
-  LineString,
-  Point,
-  Polygon,
-  Position,
-} from "geojson";
+import type { Feature, LineString, Point, Polygon, Position } from "geojson";
 import type { Map, MapLayerMouseEvent, MapMouseEvent } from "maplibre-gl";
-import { pointFeature, setPrecision } from "./utils.js";
+import {
+  emptyGeojson,
+  pointFeature,
+  setPrecision,
+  type FeatureWithProps,
+} from "./utils.js";
 import { polygonToolGj, undoLength } from "./stores.js";
 
 const maxPreviousStates = 100;
@@ -16,8 +14,8 @@ const maxPreviousStates = 100;
 export class PolygonTool {
   map: Map;
   active: boolean;
-  eventListenersSuccess: ((f: Feature<Polygon>) => void)[];
-  eventListenersUpdated: ((f: Feature<Polygon>) => void)[];
+  eventListenersSuccess: ((f: FeatureWithProps<Polygon>) => void)[];
+  eventListenersUpdated: ((f: FeatureWithProps<Polygon>) => void)[];
   eventListenersFailure: (() => void)[];
   points: Position[];
   cursor: Feature<Point> | null;
@@ -200,10 +198,10 @@ export class PolygonTool {
     }
   };
 
-  addEventListenerSuccess(callback: (f: Feature<Polygon>) => void) {
+  addEventListenerSuccess(callback: (f: FeatureWithProps<Polygon>) => void) {
     this.eventListenersSuccess.push(callback);
   }
-  addEventListenerUpdated(callback: (f: Feature<Polygon>) => void) {
+  addEventListenerUpdated(callback: (f: FeatureWithProps<Polygon>) => void) {
     this.eventListenersUpdated.push(callback);
   }
   addEventListenerFailure(callback: () => void) {
@@ -252,10 +250,7 @@ export class PolygonTool {
   }
 
   private redraw() {
-    let gj: FeatureCollection = {
-      type: "FeatureCollection",
-      features: [],
-    };
+    let gj = emptyGeojson();
 
     this.points.forEach((pt, idx) => {
       let f = pointFeature(pt);
@@ -319,7 +314,7 @@ export class PolygonTool {
   }
 
   // TODO Force the proper winding order that geojson requires
-  private polygonFeature(): Feature<Polygon> | null {
+  private polygonFeature(): FeatureWithProps<Polygon> | null {
     if (this.points.length < 3) {
       return null;
     }
