@@ -180,6 +180,13 @@ export class PolygonTool {
     if (!this.active) {
       return;
     }
+
+    let tag = (e.target as HTMLElement).tagName;
+    // Let keys key work if the user is focused on a form
+    if (tag == "INPUT" || tag == "TEXTAREA") {
+      return;
+    }
+
     if (e.key == "Enter") {
       e.stopPropagation();
       this.finish();
@@ -192,6 +199,13 @@ export class PolygonTool {
     if (!this.active) {
       return;
     }
+
+    let tag = (e.target as HTMLElement).tagName;
+    // Let keys key work if the user is focused on a form
+    if (tag == "INPUT" || tag == "TEXTAREA") {
+      return;
+    }
+
     if (e.key == "Escape") {
       e.stopPropagation();
       this.cancel();
