@@ -2,13 +2,17 @@
   import { PolygonTool } from "./polygon_tool.js";
   import { undoLength } from "./stores.js";
 
-  export let polygonTool: PolygonTool;
+  interface Props {
+    polygonTool: PolygonTool;
+  }
+
+  let { polygonTool }: Props = $props();
 </script>
 
 <div style="display: flex; justify-content: space-between;">
-  <button on:click={() => polygonTool.finish()}>Finish</button>
-  <button on:click={() => polygonTool.cancel()}>Cancel</button>
-  <button disabled={$undoLength == 0} on:click={() => polygonTool.undo()}>
+  <button onclick={() => polygonTool.finish()}>Finish</button>
+  <button onclick={() => polygonTool.cancel()}>Cancel</button>
+  <button disabled={$undoLength == 0} onclick={() => polygonTool.undo()}>
     {#if $undoLength == 0}
       Undo
     {:else}
