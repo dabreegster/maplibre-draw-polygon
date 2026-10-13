@@ -1,6 +1,6 @@
 {
   "name": "maplibre-draw-polygon",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build && npm run package",
@@ -53,6 +53,6 @@
   "type": "module",
   "dependencies": {
     "@turf/nearest-point-on-line": "^7.2.0",
-    "svelte-maplibre": "^1.2.0"
+    "svelte-maplibre": "^2.0.1"
   }
 }
